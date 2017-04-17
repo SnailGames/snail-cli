@@ -11,10 +11,6 @@ var questions = [{
         type: 'input',
         name: 'backend',
         message: 'backend name:'
-    }, {
-        type: "input",
-        name: 'date',
-        message: 'build date(default ' + new Date().toLocaleDateString() + ')'
     }
 ]
 module.exports = questions

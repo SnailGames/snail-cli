@@ -6,12 +6,15 @@ var clone = require('./git-clone')
 var ora = require('ora')
 var chalk = require('chalk')
 var inquirer = require('inquirer')
-    // var info = {
-    //     frontend: "",
-    //     designer: "",
-    //     backend: "",
-    //     date: new Date().toLocaleDateString()
-    // }
+var fs = require("fs")
+var startHttpServer = require('./start.html.server')
+var info = {
+    frontend: "",
+    designer: "",
+    backend: "",
+    date: new Date().toLocaleDateString()
+}
+var w_data = '这是一段通过fs.writeFile函数写入的内容；\r\n';
 var questions = require('./question')
 var error = chalk.bold.red
 var succ = chalk.bold.green
@@ -35,20 +38,22 @@ if (args[0].indexOf('-') !== -1) {
         switch (optionName) {
             case 'v':
                 console.log('v1.0.0')
+                process.exit()
                 break;
             case 'b':
-                console.log('starting a http server')
+                startHttpServer({ publicPath: args[1] ? args[1] : '' })
                 break;
             case 'h':
                 console.log('help list >> \n')
                 for (var optionName in SnailOptions) {
                     console.log('  -%s : %s \n', optionName, SnailOptions[optionName])
                 }
+                process.exit()
                 break;
             default:
+                process.exit()
                 break;
         }
-        process.exit()
     }
 } else {
     if (args[0].match(/^[^\\/:*?""<>|,]+$/)) {
@@ -65,9 +70,17 @@ if (args[0].indexOf('-') !== -1) {
                 }
                 spinner.succeed(succ('build project ' + folderName + ' successfully'))
 
-                // var projectInfo = require('./' + folderName + '/config/project-info.js')
-                // console.log(projectInfo)
-                process.exit()
+                var w_data = 'var projectInfo = {frontend:"' + answers.frontend + '",designer: "' + answers.designer + '",backend: "' + answers.backend + '",date: "' + answers.date + '"};module.exports=projectInfo'
+                var w_data = new Buffer(w_data)
+                var projectInfoPath = './' + folderName + '/config/project.info.js'
+                fs.writeFile(projectInfoPath, w_data, { flage: "w" }, function(err) {
+                    if (err) {
+                        console.error(err)
+                        process.exit()
+                    } else {
+                        process.exit()
+                    }
+                })
             })
         })
     } else {

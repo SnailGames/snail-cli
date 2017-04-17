@@ -32,8 +32,8 @@ var vendor = {
     }
 }
 var config = {
-    homedir: '',
-    home: 'index.html',
+    publicPath: '',
+    homePage: 'index.html',
     port: '',
     autoOpenBrowser: true,
 }
@@ -47,12 +47,16 @@ app.use(function(req, res, next) {
 
 app.use(serveStatic(process.cwd(), { 'index': ['index.html'] }))
 var server = http.createServer(app)
-server.listen(config.port !== 0 ? config.port : 0)
 
-var defaultUrl = config.homedir ? config.homedir + '/' + config.home : config.home
 
-server.on('listening', function() {
-    var port = server.address().port
-    console.log('>>listening at port: ' + port)
-    config.autoOpenBrowser && vendor.openURL('http://' + vendor.getIPAddress() + ':' + port + '/' + defaultUrl)
-})
+function start(options) {
+    config = Object.assign({}, config, options)
+    server.listen(config.port !== 0 ? config.port : 0)
+    var defaultUrl = config.publicPath ? config.publicPath + '/' + config.homePage : config.homePage
+    server.on('listening', function() {
+        var port = server.address().port
+        console.log('>>listening at port: ' + port)
+        config.autoOpenBrowser && vendor.openURL('http://' + vendor.getIPAddress() + ':' + port + '/' + defaultUrl)
+    })
+}
+module.exports = start
