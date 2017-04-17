@@ -7,7 +7,7 @@ var ora = require('ora')
 var chalk = require('chalk')
 var inquirer = require('inquirer')
 var fs = require("fs")
-var startHttpServer = require('./start.html.server')
+var startHttpServer = require('./start-html-server')
 var info = {
     frontend: "",
     designer: "",
