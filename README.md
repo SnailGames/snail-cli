@@ -13,7 +13,6 @@ npm i snail-cli -g
 snail demo 			#初始化一个名为 demo 的项目
 snail -h 			#帮助列表
 snail -b 			#在当前目录开启一个 http 服务器
-snail -b dist 		#在当前目录下的 dist 目录开启一个 http 服务器
 snail -v			#查看版本号
 ```
 

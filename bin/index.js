@@ -7,6 +7,7 @@ var ora = require('ora')
 var chalk = require('chalk')
 var inquirer = require('inquirer')
 var fs = require("fs")
+var package = require('../package.json')
 var startHttpServer = require('./start-html-server')
 var info = {
     frontend: "",
@@ -37,11 +38,11 @@ if (args[0].indexOf('-') !== -1) {
     } else {
         switch (optionName) {
             case 'v':
-                console.log('v1.0.0')
+                console.log('v' + package.version)
                 process.exit()
                 break;
             case 'b':
-                startHttpServer({ publicPath: args[1] ? args[1] : '' })
+                startHttpServer()
                 break;
             case 'h':
                 console.log('help list >> \n')
